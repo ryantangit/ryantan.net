@@ -1,0 +1,154 @@
+:root {
+  font-family: Roboto, sans-serif;
+  --max-width: 1000px;
+  --color-navbar: #f0efeb;
+  --color-link: #1a79c8;
+  --color-wikibox-background: #f8f9fa;
+  --color-wikibox-heading: #e6e6fa;
+  --zi-base: 0;
+  --zi-navigation: 1000;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-link);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#content-container {
+  max-width: var(--max-width);
+  margin: 10px auto;
+  padding: 5px;
+}
+
+/* This is to fix instances where the wikibox is of greater length than the content.
+ * When 
+ * https://www.w3schools.com/howto/howto_css_clearfix.asp */
+#content-container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.content-header {
+  margin: 0 0 0 0;
+  font-family: Times, serif;
+  font-weight: lighter;
+}
+
+.content-bar {
+  margin-top: 0;
+  border: 1px solid;
+}
+
+.content-subheader {
+  margin: 0 0 0 0;
+  font-family: Times, serif;
+  font-weight: lighter;
+  border-bottom: 1px solid;
+  display: flow-root;
+  overflow: hidden;
+}
+
+#footer-container {
+  font-size: 80%;
+  background-color: var(--color-navbar);
+  max-width: var(--max-width);
+  margin: 10px auto;
+  padding: 10px;
+}
+
+.footer-list {
+  display: flex;
+  justify-content: flex-start;
+  gap: 30px;
+  list-style-type: none;
+  padding: 0;
+}
+
+#navbar-container {
+  position: sticky;
+  top: 0;
+  min-width: 50%;
+  max-width: 100%;
+  background-color: var(--color-navbar);
+  border-style: groove;
+}
+
+.navbar-list {
+  display: flex;
+  justify-content: flex-start;
+  align-content: flex-end;
+  gap: 30px;
+  z-index: var(--zi-navigation);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 15px 0 15px 0;
+  list-style-type: none;
+}
+
+/* Found this little gem for marquee effect.
+ * TODO: find a use for this 
+ * https://en.wikipedia.org/wiki/Marquee_element
+ */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee-container {
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-message {
+  display: inline-block;
+}
+
+.wikibox {
+  float: right;
+  max-width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  background-color: var(--color-wikibox-background);
+  padding: 5px;
+  margin-left: 10px;
+}
+
+.wikibox-title {
+  text-align: center;
+  font-size: 125%;
+}
+
+.wikibox-image {
+  text-align: center;
+}
+
+.wikibox-section {
+  background-color: var(--color-wikibox-heading);
+  padding: 4px;
+}
+.wikibox-heading {
+  text-align: center;
+}
+.wikibox-detail {
+  text-align: center;
+  font-size: 95%;
+}
+
+@media (max-width: 650px) {
+  .wikibox {
+    float: none;
+    width: 100%;
+    margin: 0;
+  }
+}
