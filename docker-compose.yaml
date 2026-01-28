@@ -1,0 +1,5 @@
+services:
+  ryantan-net:
+    build: .
+    ports:
+      - "6767:6767" #Six Sevennnnn
