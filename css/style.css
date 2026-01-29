@@ -69,6 +69,13 @@ a:hover {
   padding: 0;
 }
 
+.socials-list {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+}
+
 #navbar-container {
   position: sticky;
   top: 0;

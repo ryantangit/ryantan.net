@@ -3,6 +3,7 @@ const NavRoutes = [
   { href: "/pages/projects.html", label: "Projects" },
   { href: "/pages/blogs.html", label: "Blogs" },
 ];
+
 function navbar() {
   const navbarContainer = document.getElementById("navbar-container");
   if (!navbarContainer) {
