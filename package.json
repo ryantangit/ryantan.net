@@ -1,0 +1,31 @@
+{
+  "name": "ryantan.net",
+  "version": "1.0.0",
+  "description": "Uhhh static site builder for my own website",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "./tools/page_gen/prebuild.sh",
+    "build": "./tools/page_gen/build.sh",
+    "watcher": "./tools/src_watcher/watcher.sh",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./tools/dev.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryantangit/ryantan.net.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ryantangit/ryantan.net/issues"
+  },
+  "homepage": "https://github.com/ryantangit/ryantan.net#readme",
+  "devDependencies": {
+    "@types/jsdom": "^30.0.0",
+    "jsdom": "^30.0.1",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2"
+  }
+}

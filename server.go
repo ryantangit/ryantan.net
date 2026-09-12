@@ -5,7 +5,6 @@ import (
 	"log"
 )
 
-
 func logMiddleWare(h http.Handler) http.Handler {
 	logFn := func (w http.ResponseWriter, r *http.Request)	{
 		method := r.Method	
@@ -17,7 +16,7 @@ func logMiddleWare(h http.Handler) http.Handler {
 }
 
 func rootHandler() http.Handler {
-	fileServer := http.FileServer(http.Dir("./"))
+	fileServer := http.FileServer(http.Dir("./public"))
 	logging := logMiddleWare(fileServer)
 	return logging
 }
@@ -25,4 +24,5 @@ func rootHandler() http.Handler {
 func main() {
 	http.Handle("/", rootHandler())
 	http.ListenAndServe(":6767", nil)
+	log.Printf("Server serving")
 }
