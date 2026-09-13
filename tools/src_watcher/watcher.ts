@@ -50,3 +50,4 @@ const watcher = new BuildWatcher();
 const changeHandler = watcher.handleChange.bind(watcher);
 watch("./src/pages", { recursive: true }, changeHandler);
 watch("./src/template", { recursive: true }, changeHandler);
+console.log("Watcher mounted :)");
