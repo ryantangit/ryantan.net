@@ -12,6 +12,10 @@ fi
 GO_BINARY_FP='./dist/server'
 # Compile and go binary for server
 go build -o $GO_BINARY_FP server.go
+if [ $? -ne 0 ]; then
+  echo "Go binary build has failed"
+  exit 1;
+fi
 
 TOOLS_DIR='./tools'
 node $TOOLS_DIR/dist/src_watcher/watcher.js & 
@@ -20,14 +24,11 @@ watcher_pid=$!
 $GO_BINARY_FP & 
 go_server_pid=$!
 
-wait
-
-
 cleanup() {
-  if [ -n "${watcher_pid}:-" ]; then
+  if [ -n "${watcher_pid:-}" ]; then
     kill "${watcher_pid}" 2>/dev/null
   fi 
-  if [ -n "${go_server_pid}:-"]; then
+  if [ -n "${go_server_pid:-}" ]; then
     kill "${go_server_pid}" 2>/dev/null
   fi
 }
@@ -35,3 +36,5 @@ cleanup() {
 trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
+
+wait

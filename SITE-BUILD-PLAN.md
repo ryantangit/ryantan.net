@@ -55,12 +55,12 @@ Verification: fresh build and rebuild passed in a temporary copy. Browser checks
 
 ### 5. Docker and local workflow
 
-- [ ] Add an asset build stage with Node to the Docker build.
-- [ ] Keep the Go compilation stage; asset generation and Go compilation can happen independently because the server reads `public/` at runtime.
-- [ ] Assemble the final image from the compiled server and generated `public/`; reconsider the current final `COPY . .`.
+- [x] Add an asset build stage with Node to the Docker build.
+- [x] Keep the Go compilation stage; asset generation and Go compilation can happen independently because the server reads `public/` at runtime.
+- [x] Assemble the final image from the compiled server and generated `public/`; the final image no longer copies the entire repository.
 - [ ] Verify that a clean checkout can build the image without a locally generated `public/`.
-- [ ] Check the homepage, nested pages, navigation, images, styles, and scripts through the Go server.
-- [ ] Add file watching once the one-command build works reliably.
+- [x] Check the site through the Go server in Docker. The user reports that the Docker build and served site work.
+- [x] Add file watching once the one-command build works reliably.
 
 ## Current progress and next exercise
 
@@ -68,4 +68,6 @@ Shared layout milestone complete. All four pages are generated from `src/pages/`
 
 Verification: a full build in a temporary copy passed. All four outputs contain their configured titles, page content, and three navigation links, with no runtime scripts. A temporary shared layout edit appeared on all four pages. The user reports styling looks good; automated browser visual checks were not performed.
 
-Shared project data is deferred by user preference. Next priority is to be selected; remaining options include Docker build integration, local watch/preview workflow, and blog metadata.
+The local development command now builds the site and Go server, starts both the source watcher and server, and cleans up their processes on exit. The Docker build generates `public/` in a Node stage, compiles the server in a Go stage, and copies only those artifacts into the runtime image. The user verified that the Docker build and served site work. Clean-checkout verification remains until the current source and build changes are committed.
+
+Shared project data remains deferred by user preference. The next exercise is blog metadata: define each post's title, date, slug, and body source in one collection, then generate the homepage blog list and blog index from it.
