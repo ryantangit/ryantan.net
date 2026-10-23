@@ -13,7 +13,6 @@ type BlogPostMeta = PageRouteMeta & {
     date: string;
 }
 
-
 export const templateFilePath = {
   BASIC: "src/template/basic.html",
   BLOG: "src/template/blog.html",
@@ -64,3 +63,27 @@ export const navRoutesConfig: NavRoute[] = [
   { href: "/pages/projects.html", label: "Projects" },
   { href: "/pages/blogs.html", label: "Blogs" },
 ];
+
+type ProjectMeta = {
+  hostUrl?: string;
+  sourceCodeUrl: string;
+  title: string;
+  description: string;
+}
+
+export const projectMeta: ProjectMeta[] = [{
+  title: "SJSU Bark",
+  description: "San Jose State Garage Occupancy Inference",
+  sourceCodeUrl: "https://github.com/ryantangit/sjsubark",
+}, {
+  title: "This Website",
+  hostUrl: "https://ryantan.net",
+  description:  "[This] Minimal website to mess around with",
+  sourceCodeUrl: "https://github.com/ryantangit/ryantan.net",
+  },
+  {
+  title: "BirdiePicks",
+  description:"League of Legends Statistical Tracker",
+  sourceCodeUrl: "https://github.com/ryantangit/BirdiePicks/",
+  }
+]

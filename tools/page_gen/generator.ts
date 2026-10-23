@@ -1,4 +1,4 @@
-import { pageRoutesConfig, blogPostsConfig ,navRoutesConfig, templateFilePath } from "./config.js";
+import { pageRoutesConfig, blogPostsConfig ,navRoutesConfig, templateFilePath, projectMeta } from "./config.js";
 import { JSDOM } from "jsdom";
 import fs from "node:fs/promises";
 import { dirname } from "node:path";
@@ -47,6 +47,36 @@ function injectBlogList(document: Document) {
   });
 };
 
+function injectProjectList(document: Document) {
+  const listContainer = document.getElementById("project-list");
+  if (!listContainer) {
+    return;
+  }
+  projectMeta.forEach((project) => {
+    const li = document.createElement("li");
+    const titleP = document.createElement("p");
+    titleP.textContent = project.title;
+    if (project.hostUrl) {
+      const hostUrlA = document.createElement("a");
+      hostUrlA.href = project.hostUrl;
+      hostUrlA.target = "_blank";
+      hostUrlA.rel = "nonopener";
+      hostUrlA.textContent =" (Link)"
+      titleP.appendChild(hostUrlA);
+    }
+    li.appendChild(titleP);
+    const descriptionP = document.createElement("p");
+    descriptionP.textContent = project.description;
+    const sourceA = document.createElement("a");
+    sourceA.href = project.sourceCodeUrl;
+    sourceA.target = "_blank";
+    sourceA.rel = "nonopener";
+    sourceA.textContent = " (Source)"
+    descriptionP.appendChild(sourceA);
+    li.appendChild(descriptionP);
+    listContainer.appendChild(li);
+  });
+}
 
 async function generate() {
   // Route through each page route meta and perform the injection
@@ -81,6 +111,7 @@ async function generate() {
     const inDom = await JSDOM.fromFile(meta.inFile);
     bodyEl.innerHTML = inDom.window.document.body.innerHTML;
     injectBlogList(document);
+    injectProjectList(document);
     const content = templateDom.serialize();
     const outdir = dirname(meta.outFile);
     await fs.mkdir(outdir, { recursive: true });
