@@ -1,9 +1,10 @@
-import { pageRoutesConfig, navRoutesConfig } from "./config.js";
+import { pageRoutesConfig, blogPostsConfig ,navRoutesConfig, templateFilePath } from "./config.js";
 import { JSDOM } from "jsdom";
 import fs from "node:fs/promises";
 import { dirname } from "node:path";
 
-function navbar(document: Document) {
+// Inject the navbar onto the specified document
+function injectNavbar(document: Document) {
   const navbarContainer = document.getElementById("navbar-container");
   if (!navbarContainer) {
     throw new Error(
@@ -23,14 +24,37 @@ function navbar(document: Document) {
     navbarList.appendChild(li);
   });
   navbarContainer.appendChild(navigation);
-}
+};
+
+function injectBlogList(document: Document) {
+  const listContainer = document.getElementById("blog-lists");
+  if (!listContainer) {
+    return;
+  }
+  const fullList = listContainer.hasAttribute("data-blog-list-all");
+  let blogList = [...blogPostsConfig];
+  const NUM_OF_BLOGS_SHORTLIST = 5;
+  if (!fullList) {
+    blogList = blogList.slice(0, NUM_OF_BLOGS_SHORTLIST);
+  }
+  blogList.forEach((blog) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = blog.outFile.slice(blog.outFile.indexOf("/"));
+    a.textContent = `(${blog.date}) ${blog.templateMeta.title}`;
+    li.appendChild(a);
+    listContainer.append(li);
+  });
+};
+
 
 async function generate() {
   // Route through each page route meta and perform the injection
-  for (const meta of pageRoutesConfig) {
+  const pageConfigs = [...pageRoutesConfig, ...blogPostsConfig];
+  for (const meta of pageConfigs) {
     const templateDom = await JSDOM.fromFile(meta.templateMeta.templateFile);
     const document = templateDom.window.document;
-    navbar(document);
+    injectNavbar(document);
     const titleEl = document.querySelector("#_page_title");
     if (!titleEl) {
       throw new Error("Title Element not found, cannot hydrate");
@@ -40,8 +64,23 @@ async function generate() {
     if (!bodyEl) {
       throw new Error("Body Element not found, cannot hydrate");
     }
+    if (meta.templateMeta.templateFile === templateFilePath.BLOG) {
+      const dateEl = document.querySelector("#_page_date");
+      if (!dateEl) {
+        throw new Error("Date Element not found, cannot hydrate");
+      }
+      if ("date" in meta && typeof meta.date === "string") {
+        dateEl.textContent = meta.date;
+      }
+      const blogTitleEl = document.querySelector("#_blog_title");
+      if (!blogTitleEl) {
+        throw new Error("Blog Element not found, cannot hydrate");
+      }
+      blogTitleEl.textContent = meta.templateMeta.title;
+    }
     const inDom = await JSDOM.fromFile(meta.inFile);
     bodyEl.innerHTML = inDom.window.document.body.innerHTML;
+    injectBlogList(document);
     const content = templateDom.serialize();
     const outdir = dirname(meta.outFile);
     await fs.mkdir(outdir, { recursive: true });
